@@ -34,6 +34,8 @@ LOGO=archlinux-logo
 			t.Fatal(err)
 		}
 
+		file.Close()
+
 		distroName := "One Piece OS"
 		got, err := fetcher.GetDistroName(file.Name())
 		if err != nil {
