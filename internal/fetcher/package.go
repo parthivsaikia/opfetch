@@ -9,6 +9,11 @@ func GetPackageCount(filepath string) (int, error) {
 
 }
 
+func isExist(filepath string) bool {
+	_, err := os.Stat(filepath)
+	return err == nil
+}
+
 func getPacmanPackage() (int, error) {
 	count := 0
 	entries, err := os.ReadDir("/var/lib/pacman/local")
