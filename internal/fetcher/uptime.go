@@ -17,13 +17,13 @@ type Time struct {
 
 func (t *Time) String() string {
 	if t.Days == 0 && t.Hours == 0 && t.Minutes == 0 {
-		return fmt.Sprintf("%d secs", t.Seconds)
+		return fmt.Sprintf("%ds", t.Seconds)
 	} else if t.Days > 0 {
-		return fmt.Sprintf("%d days, %d hours, %d mins", t.Days, t.Hours, t.Minutes)
+		return fmt.Sprintf("%dd %dh %dm", t.Days, t.Hours, t.Minutes)
 	} else if t.Hours > 0 {
-		return fmt.Sprintf("%d hours, %d mins", t.Hours, t.Minutes)
+		return fmt.Sprintf("%dh %dm", t.Hours, t.Minutes)
 	}
-	return fmt.Sprintf("%d mins", t.Minutes)
+	return fmt.Sprintf("%dm", t.Minutes)
 }
 
 func GetUptime(filepath string) (*Time, error) {

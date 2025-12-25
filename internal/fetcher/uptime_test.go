@@ -25,7 +25,7 @@ func TestGetUptime(t *testing.T) {
 			expecteHours: 0,
 			expectedMin:  0,
 			expectedSec:  45,
-			expectedStr:  "45 secs",
+			expectedStr:  "45s",
 		},
 		{
 			name:         "uptime is less than an hour",
@@ -34,7 +34,7 @@ func TestGetUptime(t *testing.T) {
 			expecteHours: 0,
 			expectedMin:  39,
 			expectedSec:  5,
-			expectedStr:  "39 mins",
+			expectedStr:  "39m",
 		},
 		{
 			name:         "uptime is more than an hour",
@@ -43,7 +43,7 @@ func TestGetUptime(t *testing.T) {
 			expecteHours: 5,
 			expectedMin:  31,
 			expectedSec:  16,
-			expectedStr:  "5 hours, 31 mins",
+			expectedStr:  "5h 31m",
 		},
 		{
 			name:         "uptime is more than a day",
@@ -52,7 +52,7 @@ func TestGetUptime(t *testing.T) {
 			expecteHours: 1,
 			expectedMin:  2,
 			expectedSec:  23,
-			expectedStr:  "2 days, 1 hours, 2 mins",
+			expectedStr:  "2d 1h 2m",
 		},
 	}
 
