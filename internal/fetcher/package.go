@@ -2,6 +2,7 @@ package fetcher
 
 import (
 	"bufio"
+	"log"
 	"os"
 	"strings"
 )
@@ -54,7 +55,11 @@ func getDpkgPackageCount() (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalf("Error while closing file %v", err)
+		}
+	}()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		if strings.HasPrefix(scanner.Text(), "Package") {

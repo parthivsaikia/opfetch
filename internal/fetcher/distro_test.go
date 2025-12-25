@@ -28,13 +28,20 @@ LOGO=archlinux-logo
 		if err != nil {
 			t.Fatal(err)
 		}
-		defer os.Remove(file.Name())
+
+		defer func() {
+			if err := os.Remove(file.Name()); err != nil {
+				t.Fatalf("Error while removing file %v", err)
+			}
+		}()
 
 		if _, err := file.Write([]byte(os_release_data)); err != nil {
 			t.Fatal(err)
 		}
 
-		file.Close()
+		if err := file.Close(); err != nil {
+			t.Fatal(err)
+		}
 
 		distroName := "One Piece OS"
 		got, err := fetcher.GetDistroName(file.Name())

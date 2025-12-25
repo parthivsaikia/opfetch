@@ -65,10 +65,18 @@ func TestGetUptime(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			defer os.Remove(file.Name())
+			defer func() {
+				if err := os.Remove(file.Name()); err != nil {
+					t.Fatalf("Error while removing file %v", err)
+				}
+			}()
 
-			file.Write([]byte(testCases.uptimeData))
-			file.Close()
+			if _, err := file.Write([]byte(testCases.uptimeData)); err != nil {
+				t.Fatal(err)
+			}
+			if err := file.Close(); err != nil {
+				t.Fatal(err)
+			}
 			uptime, err := fetcher.GetUptime(file.Name())
 			if err != nil {
 				t.Fatal(err)

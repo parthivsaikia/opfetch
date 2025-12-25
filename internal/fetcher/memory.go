@@ -2,6 +2,7 @@ package fetcher
 
 import (
 	"bufio"
+	"log"
 	"math"
 	"os"
 	"strconv"
@@ -22,7 +23,11 @@ func GetMemory(filepath string) (*MemoryInfo, error) {
 		return nil, err
 	}
 
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalf("Error while closing file %v", err)
+		}
+	}()
 
 	scanner := bufio.NewScanner(file)
 

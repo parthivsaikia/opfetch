@@ -2,6 +2,7 @@ package fetcher
 
 import (
 	"bufio"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -13,7 +14,11 @@ func GetDistroName(filepath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalf("Error closing file %v", err)
+		}
+	}()
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
