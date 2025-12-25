@@ -15,7 +15,11 @@ func TestGetPackage(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		defer os.RemoveAll(dir)
+		defer func() {
+			if err := os.RemoveAll(dir); err != nil {
+				t.Fatalf("Error while removing directory %v", err)
+			}
+		}()
 
 		pacmanPath = dir
 
@@ -102,7 +106,9 @@ Description: interactive processes viewer
 			t.Fatal(err)
 		}
 
-		file.Close()
+		if err := file.Close(); err != nil {
+			t.Fatalf("Error while closing file %v", err)
+		}
 
 		originalPacmanPath := pacmanPath
 		pacmanPath = "/nothing"

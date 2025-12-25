@@ -1,10 +1,9 @@
 package fetcher_test
 
 import (
+	"github.com/parthivsaikia/opfetch/internal/fetcher"
 	"os"
 	"testing"
-
-	"github.com/parthivsaikia/opfetch/internal/fetcher"
 )
 
 func TestGetMemory(t *testing.T) {
@@ -25,12 +24,19 @@ SwapFree:        2097148 kB
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.Remove(file.Name())
+
+	defer func() {
+		if err := os.Remove(file.Name()); err != nil {
+			t.Fatalf("Error while removing file %v", err)
+		}
+	}()
 	if _, err := file.Write([]byte(meminfo_data)); err != nil {
 		t.Fatal(err)
 	}
 
-	file.Close()
+	if err := file.Close(); err != nil {
+		t.Fatal(err)
+	}
 
 	expectedTotalMem := 15.63
 	expectedFreeMem := 10.71

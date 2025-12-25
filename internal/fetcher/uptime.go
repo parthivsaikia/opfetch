@@ -3,6 +3,7 @@ package fetcher
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -31,7 +32,13 @@ func GetUptime(filepath string) (*Time, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalf("Error while closing file %v", err)
+		}
+	}()
+
 	scanner := bufio.NewScanner(file)
 	if !scanner.Scan() {
 		return nil, fmt.Errorf("file is empty")
