@@ -1,11 +1,26 @@
 package fetcher
 
 import (
+	"bufio"
 	"os"
+	"strings"
 )
 
-func GetPackageCount(filepath string) (int, error) {
-	pacmanFilePath := "/var/lib/pacman/local"
+var (
+	pacmanPath = "/var/lib/pacman/local"
+	dpkgPath   = "/var/lib/dpkg/status"
+)
+
+func GetPackageCount() (int, error) {
+	if isExist(pacmanPath) {
+		return getPacmanPackageCount()
+	}
+
+	if isExist(dpkgPath) {
+		return getDpkgPackageCount()
+	}
+
+	return 0, nil
 
 }
 
@@ -14,9 +29,9 @@ func isExist(filepath string) bool {
 	return err == nil
 }
 
-func getPacmanPackage() (int, error) {
+func getPacmanPackageCount() (int, error) {
 	count := 0
-	entries, err := os.ReadDir("/var/lib/pacman/local")
+	entries, err := os.ReadDir(pacmanPath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return 0, nil
@@ -31,4 +46,20 @@ func getPacmanPackage() (int, error) {
 	}
 	return count, nil
 
+}
+
+func getDpkgPackageCount() (int, error) {
+	count := 0
+	file, err := os.Open(dpkgPath)
+	if err != nil {
+		return 0, err
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		if strings.HasPrefix(scanner.Text(), "Package") {
+			count++
+		}
+	}
+	return count, nil
 }
