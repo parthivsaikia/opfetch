@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -9,7 +11,19 @@ import (
 	"github.com/parthivsaikia/opfetch/internal/ui"
 )
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 func main() {
+	versionFlag := flag.Bool("version", false, "Display the version of opfetch")
+	flag.Parse()
+	if *versionFlag {
+		fmt.Printf("opfetch %s (commit: %s, built at: %s)\n", version, commit, date)
+		return
+	}
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, nil))
 
 	username, err := fetcher.GetUsername()
