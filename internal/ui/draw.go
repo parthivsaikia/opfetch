@@ -14,7 +14,6 @@ import (
 var (
 	paperColor  = lipgloss.Color("#A5907C")
 	textColor   = lipgloss.Color("#31231B")
-	labelColor  = lipgloss.Color("#5C4033") // Darker brown for labels
 	accentColor = lipgloss.Color("#8B6F47") // Medium brown for accents
 )
 
